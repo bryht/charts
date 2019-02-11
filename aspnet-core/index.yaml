@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  DotnetCore:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-02-11T14:07:43.1148871+01:00
+    description: A Helm chart for Kubernetes
+    digest: 420cfa581d9842aa968c40b1c89cb5cc534dc07d2268d7c03f5bc6ab58deb3ab
+    name: DotnetCore
+    urls:
+    - https://github.com/walterfranssen/DotnetCore/DotnetCore-0.1.0-beta.1.tgz
+    version: 0.1.0-beta.1
+generated: 2019-02-11T14:07:43.1148871+01:00
