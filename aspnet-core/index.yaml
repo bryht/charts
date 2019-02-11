@@ -3,11 +3,11 @@ entries:
   aspnet-core:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-02-11T14:46:08.985587+01:00
+    created: 2019-02-11T15:42:34.7799636+01:00
     description: An aspnet-core Helm chart for Kubernetes
-    digest: 43b24fdbded1bd7ccde70568088357e17e6cd4d366332b5c453b0bc8bb204ede
+    digest: dfdff2baffbe6b1562b9301fbd4e1b2377c35ea99dc7d1f416a50f36a448c6ce
     name: aspnet-core
     urls:
     - https://github.com/walterfranssen/charts/tree/master/aspnet-core/aspnet-core-0.1.0.tgz
     version: 0.1.0
-generated: 2019-02-11T14:46:08.9845866+01:00
+generated: 2019-02-11T15:42:34.7789903+01:00
