@@ -31,9 +31,9 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
-  enabled: true
+  enabled: false
   type: ClusterIP
-  port: 80
+  port: 82
 
 ingress:
   enabled: false
