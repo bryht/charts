@@ -25,7 +25,7 @@ image:
   #   configMapKey: portal-app-config.json #volumes[0].configMap.key
 
   healty:
-    enabled: false #add the livenessProbe and readinessProbe
+    enabled: true #add the livenessProbe and readinessProbe
 
 nameOverride: ""
 fullnameOverride: ""

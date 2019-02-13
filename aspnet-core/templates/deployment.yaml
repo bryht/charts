@@ -39,8 +39,8 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          {{- with .Values.image.healty }}
-          {{- if .enabled -}}
+{{- with .Values.image.healty }}
+{{- if .enabled }}
           livenessProbe:
             httpGet:
               path: {{ .livenessProbePath | default "/health" | quote }}
@@ -49,8 +49,8 @@ spec:
             httpGet:
               path: {{ .readinessProbePath | default "/health" | quote }}
               port: http
-          {{- end }}
-          {{- end }}
+{{- end }}
+{{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
