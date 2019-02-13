@@ -25,15 +25,15 @@ image:
   #   configMapKey: portal-app-config.json #volumes[0].configMap.key
 
   healty:
-    enabled: true #add the livenessProbe and readinessProbe
+    enabled: false #add the livenessProbe and readinessProbe
 
 nameOverride: ""
 fullnameOverride: ""
 
 service:
-  enabled: false
+  enabled: true
   type: ClusterIP
-  port: 82
+  port: 80
 
 ingress:
   enabled: false
