@@ -23,6 +23,14 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{ if or .Values.image.volumeFileMounts }}
+          volumeMounts:
+{{- range .Values.image.volumeFileMounts }}
+          - name: {{.volumeName}}
+            mountPath: {{.mountPath}}{{.mountFile}}
+            subPath: {{.mountFile}}
+{{- end }}
+{{- end }}
 {{ if or .Values.image.secretsEnvVarts }}
           env:
           {{- toYaml .Values.image.secretsEnvVarts | nindent 10 }}
@@ -45,6 +53,19 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+
+{{ if or .Values.image.volumeFileMounts }}
+      volumes:
+{{- range .Values.image.volumeFileMounts }}
+        - name: {{.volumeName}}
+          configMap:
+            name: {{.configMapName}}
+            items:
+              - key: {{.configMapKey}}
+                path: {{.mountFile}}
+{{- end }}
+{{- end }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

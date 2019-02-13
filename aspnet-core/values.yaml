@@ -17,6 +17,12 @@ image:
     #       key: connectionstring
     # - name:  DatabaseType #double underscore replaces the :
     #   value: "SqlServer"
+  volumeFileMounts: 
+  - volumeName: app-config-volume
+    mountPath: /app
+    mountFile: /app-config.json
+    configMapname: portal-app-config
+    configMapKey: portal-app-config.json
 
   healty:
     enabled: false #add the livenessProbe and readinessProbe
