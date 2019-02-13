@@ -19,8 +19,8 @@ image:
     #   value: "SqlServer"
   volumeFileMounts: {}
   # - volumeName: app-config-volume #volumeMounts[0].name AND volumes[0].name
-  #   mountPath: /app #volumeMounts[0].mountPath  
-  #   mountFile: /app-config.json #volumeMounts[0].mountPath AND #volumeMounts[0].subPath AND #volumes[0].configMap.path
+  #   mountPath: /app/ #volumeMounts[0].mountPath  
+  #   mountFile: app-config.json #No slash volumeMounts[0].mountPath AND #volumeMounts[0].subPath AND #volumes[0].configMap.path
   #   configMapName: portal-app-config #volumes[0].configMap.name
   #   configMapKey: portal-app-config.json #volumes[0].configMap.key
 
