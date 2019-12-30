@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.2"
-description: An aspnet-core Helm chart for Kubernetes
-name: aspnet-core
-version: 0.1.2
