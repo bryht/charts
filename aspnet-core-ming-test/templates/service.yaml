@@ -1,0 +1,21 @@
+{{ if or (not .Values.service.enabled) (ne .Values.service.enabled false) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "DotnetCore.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "DotnetCore.name" . }}
+    helm.sh/chart: {{ include "DotnetCore.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "DotnetCore.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

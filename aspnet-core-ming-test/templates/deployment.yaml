@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "DotnetCore.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "DotnetCore.name" . }}
+    helm.sh/chart: {{ include "DotnetCore.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "DotnetCore.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "DotnetCore.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{ if or .Values.image.volumeFileMounts }}
+          volumeMounts:
+{{- range .Values.image.volumeFileMounts }}
+          - name: {{.volumeName}}
+            mountPath: {{.mountPath}}{{.mountFile}}
+            {{- if .mountFile }}
+            subPath: {{.mountFile}}
+            {{- end }}
+{{- end }}
+{{- end }}
+{{ if or .Values.image.secretsEnvVarts }}
+          env:
+          {{- toYaml .Values.image.secretsEnvVarts | nindent 10 }}
+{{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+{{- with .Values.image.healty }}
+{{- if .enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .livenessProbePath | default "/health" | quote }}
+              port: http
+          readinessProbe:
+            httpGet:
+              path: {{ .readinessProbePath | default "/health" | quote }}
+              port: http
+{{- end }}
+{{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+{{ if or .Values.image.volumeFileMounts }}
+      volumes:
+{{- range .Values.image.volumeFileMounts }}
+       {{- if (.volumeType) and eq .volumeType "azureFile"}}
+        - name: {{.volumeName}}
+          azureFile:
+            secretName: {{.secretName}}
+            shareName: {{.shareName}}
+            readOnly: false
+       {{- else }}
+        - name: {{.volumeName}}
+          configMap:
+            name: {{.configMapName}}
+            items:
+              - key: {{.configMapKey}}
+                path: {{.mountFile}}
+      {{- end}}
+{{- end }}
+{{- end }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
