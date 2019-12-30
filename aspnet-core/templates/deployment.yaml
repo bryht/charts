@@ -28,7 +28,9 @@ spec:
 {{- range .Values.image.volumeFileMounts }}
           - name: {{.volumeName}}
             mountPath: {{.mountPath}}{{.mountFile}}
+            {{- if .mountFile }}
             subPath: {{.mountFile}}
+            {{- end }}
 {{- end }}
 {{- end }}
 {{ if or .Values.image.secretsEnvVarts }}
@@ -57,12 +59,20 @@ spec:
 {{ if or .Values.image.volumeFileMounts }}
       volumes:
 {{- range .Values.image.volumeFileMounts }}
+       {{- if (.volumeType) and eq .volumeType "azureFile"}}
+        - name: {{.volumeName}}
+          azureFile:
+            secretName: {{.secretName}}
+            shareName: {{.shareName}}
+            readOnly: false
+       {{- else }}
         - name: {{.volumeName}}
           configMap:
             name: {{.configMapName}}
             items:
               - key: {{.configMapKey}}
                 path: {{.mountFile}}
+      {{- end}}
 {{- end }}
 {{- end }}
 
