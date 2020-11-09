@@ -56,26 +56,6 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
-{{ if or .Values.image.volumeFileMounts }}
-      volumes:
-{{- range .Values.image.volumeFileMounts }}
-       {{- if (.volumeType) and eq .volumeType "azureFile"}}
-        - name: {{.volumeName}}
-          azureFile:
-            secretName: {{.secretName}}
-            shareName: {{.shareName}}
-            readOnly: false
-       {{- else }}
-        - name: {{.volumeName}}
-          configMap:
-            name: {{.configMapName}}
-            items:
-              - key: {{.configMapKey}}
-                path: {{.mountFile}}
-      {{- end}}
-{{- end }}
-{{- end }}
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -88,3 +68,15 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+
+{{ if or .Values.image.volumeFileMounts }}
+      volumes:
+{{- range .Values.image.volumeFileMounts }}
+        - name: {{.volumeName}}
+          configMap:
+            name: {{.configMapName}}
+            items:
+              - key: {{.configMapKey}}
+                path: {{.mountFile}}
+{{- end }}
+{{- end }}
