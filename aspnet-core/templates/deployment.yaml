@@ -34,6 +34,10 @@ spec:
             subPath: {{.mountFile}}
             {{- end }}
 {{- end }}
+{{- range .Values.image.volumeShareMounts }}
+          - name: {{.volumeName}}
+            mountPath: {{.mountPath}}
+{{- end }}
 {{- end }}
 {{ if or .Values.image.secretsEnvVarts }}
           env:
@@ -81,4 +85,12 @@ spec:
               - key: {{.configMapKey}}
                 path: {{.mountFile}}
 {{- end }}
+{{- range .Values.image.volumeShareMounts }}
+        - name: {{.volumeName}}
+          azureFile:
+            secretName: {{.secretName}}
+            shareName: {{.shareName}}
+            readOnly: false
 {{- end }}
+{{- end }}
+
