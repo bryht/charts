@@ -66,5 +66,6 @@ tolerations: []
 
 affinity: {}
 
-elasticAutodiscover: [] 
- # - "co.elastic.logs/module: envoyproxy"
+elasticAutodiscover:
+  #- co.elastic.logs/enabled: true
+ 
