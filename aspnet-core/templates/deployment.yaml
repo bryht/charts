@@ -17,6 +17,9 @@ spec:
     metadata:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
+{{- range .Values.elasticAutodiscover }}
+        {{- . | nindent 8 }}
+{{- end }}
       labels:
         app.kubernetes.io/name: {{ include "DotnetCore.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
